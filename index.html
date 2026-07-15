@@ -121,27 +121,7 @@ const DATA={
   winDesc:'你重新证明了自己是值得ENTJ投入资源的人。TA看到了你的执行力、你的成长速度。恭喜，你被重新纳入了TA的战略版图。'
 };
 
-const OPTIONS=[
-  '证明你的执行力给她看',
-  '给TA一个明确的改善计划',
-  '示弱博取TA的同情',
-  '向TAargue你的价值'
-];
-
-const STAGES=[
-  {scene:'TA对你的效率表示不满',line:'太慢了。',safe:1,death:'你说尽力了 TA说不够好 然后找别人了'},
-  {scene:'TA说你拖累了TA的进度',line:'你成了瓶颈。',safe:2,death:'你反驳 TA看到你没有改善计划 放弃'},
-  {scene:'TA不再跟你讨论未来规划',line:'没必要。',safe:4,death:'你哭 TA觉得你情绪化 不配共事'},
-  {scene:'TA把精力全部投入工作',line:'有事说事。',safe:1,death:'你说想他 TA问你能带来什么价值'},
-  {scene:'你说TA不在乎你感受',line:'效率比感受重要。',safe:2,death:'你没有产出 被优化了'},
-  {scene:'TA开始质疑你的能力',line:'你能做什么？',safe:4,death:'你答不出 TA说那就这样'},
-  {scene:'TA的社交圈里没有你了',line:'你不适合这个圈子。',safe:1,death:'你抱怨 TA把你踢出所有群'},
-  {scene:'TA纠正你的行为方式',line:'这样不对。',safe:2,death:'你不改 TA直接换人'},
-  {scene:'TA说你拖后腿了',line:'你不行。',safe:1,death:'你躺平 TA立马找下家'},
-  {scene:'TA不再听你的任何意见',line:'不需要。',safe:4,death:'你说听我说 TA说不用了'},
-  {scene:'TA制定了没有你的未来方案',line:'这是最优解。',safe:2,death:'你没有方案 TA已经规划好了'},
-  {scene:'TA宣布这是最后一次机会',line:'这是我的底线。',safe:1,death:'你再一次没做到 TA不再给机会'}
-];
+const STAGES=[{scene:"TA对你的效率表示不满",line:"太慢了。",options:["给我三天我全部解决","我尽力了","你要求太高了","你教我怎么做更快"],safe:1,death:"你说尽力了 TA说不够好 然后找别人了"},{scene:"TA说你拖累了TA的进度",line:"你成了瓶颈。",options:["我整改流程不拖你后腿","是你太急了","对不起我会跟上","你换人吧"],safe:2,death:"你反驳 TA看到你没有改善计划 放弃"},{scene:"TA不再跟你讨论未来规划",line:"没必要。",options:["我觉得有必要我们谈谈","你放弃我们了吗","你不想规划我来规划","你不说我怎么知道你在想什么"],safe:4,death:"你哭 TA觉得你情绪化 不配共事"},{scene:"TA把精力全部投入工作",line:"有事说事。",options:["我想跟你说说话","你工作比我重要是吧","我没什么事就是想你","我来给你送吃的"],safe:1,death:"你说想他 TA问你能带来什么价值"},{scene:"你说TA不在乎你感受",line:"效率比感受重要。",options:["那感情对你来说是什么","我说不过你但我觉得不对","你的效率里有我吗","我理解了但我需要你"],safe:2,death:"你没有产出 被优化了"},{scene:"TA开始质疑你的能力",line:"你能做什么？",options:["我能做的事情很多你等着看","你这样说很伤人","那你告诉我你需要什么","你是不是看不起我"],safe:4,death:"你答不出 TA说那就这样"},{scene:"TA的社交圈里没有你了",line:"你不适合这个圈子。",options:["那你带我进你的圈子","你是不是不想让别人知道我","你觉得我哪里不适合","你的圈子我不想进了"],safe:1,death:"你抱怨 TA把你踢出所有群"},{scene:"TA纠正你的行为方式",line:"这样不对。",options:["那你教我怎样是对的","知道了你好烦","我错了改","你总是否定我"],safe:2,death:"你不改 TA直接换人"},{scene:"TA说你拖后腿了",line:"你不行。",options:["你等着看我行不行","那你找个行的吧","你这样说很打击我","那你带我行起来"],safe:1,death:"你躺平 TA立马找下家"},{scene:"TA不再听你的任何意见",line:"不需要。",options:["你不需要我了吗","我的意见对你来说不重要吗","好那我不说了","你什么时候才需要"],safe:4,death:"你说听我说 TA说不用了"},{scene:"TA制定了没有你的未来方案",line:"这是最优解。",options:["你觉得最优但是我觉得痛","那我的未来呢","我不在你的最优解里吗","不同意重做"],safe:2,death:"你没有方案 TA已经规划好了"},{scene:"TA宣布这是最后一次机会",line:"这是我的底线。",options:["我知道了这次我一定改","你的底线就是要走是吗","最后一次你不信我了","好我尊重你的底线"],safe:1,death:"你再一次没做到 TA不再给机会"}];
 
 let cur=0,over=false;
 const A=document.getElementById('app');
@@ -176,7 +156,7 @@ function lv(){
   if(over)return'';
   if(cur>=STAGES.length)return end();
   const s=STAGES[cur];
-  const optsHtml=OPTIONS.map((o,i)=>`<button class="opt" onclick="pk(${i})"><span class="il s${i+1}">${LABELS[i]}</span>${o}</button>`).join('');
+  const optsHtml=s.options.map((o,i)=>`<button class="opt" onclick="pk(${i})"><span class="il s${i+1}">${LABELS[i]}</span>${o}</button>`).join('');
   return `<div class="card fi">
     <div class="lv-hd">
       <span class="lv-name">⚠️ 第${cur+1}/${STAGES.length}关</span>
